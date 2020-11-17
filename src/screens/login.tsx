@@ -9,6 +9,7 @@ import api from '../services/api'
 export default function login() {
     const [user_email, setUser_email] = useState('')
     const [user_password, setuser_password] = useState('')
+    const [user_id, setuser_id] = useState('')
 
     const { navigate } = useNavigation()
 
@@ -18,10 +19,13 @@ export default function login() {
             user_email: user_email, user_password: user_password
         }
 
-        api.post('login', data)
+        const resposta = await api.post('login', data)
             .then(() => {
                 console.log('[Axios.post] Tentando logar...')
+                
+                
      
+                
                 Alert.alert('Sucesso', 'Login realizado com sucesso', [{ text: 'Voltar', onPress: () => navigate('Home') }])
             })
             .catch(({ response }) => {
@@ -35,6 +39,8 @@ export default function login() {
                 console.error(message)
                 Alert.alert('Erro', message)
             })
+            console.log(resposta)
+           
     }
 
     return (
@@ -48,7 +54,7 @@ export default function login() {
 
                 returnKeyType="next"
                 autoFocus={true} blurOnSubmit={false}
-
+                style={styles.input}
                 value={user_email}
                 onChangeText={setUser_email}
             />
@@ -113,5 +119,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "#FFF"
+    },
+    input: {
+        padding: 12
     }
 });

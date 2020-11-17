@@ -1,26 +1,54 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import api from '../services/api'
+
+export default function perfil() {
+    const user_id = localStorage.getItem('user_id')
+
+    const [user, setUser] = useState('')
+
+    const { navigate } = useNavigation()
+
+    async function handleLogin() {
+        console.log('handle')
+        
 
 
-export default function Home() {
-    const  { navigate } = useNavigation()
+
+        useEffect(() => {
+            api.get('profile', {
+                headers: { Authorization: user_id}
+            }).then(response => {
+                setUser(response.data)
+                console.log(user)
+            })
+        }), [user_id]
+    }
+
     return (
         <View style={styles.container}>
 
-            <Text>/SOAPP/</Text>
+            <Text>teste</Text>
+            <Text>Mateus H.</Text>
+            <Text>mateustrindade@gmail.com</Text>
 
-            <TouchableOpacity style={styles.buttonEnter} onPress={( ) => navigate('login')}>
-                <Text style={styles.text}>Entrar</Text>
+            <TouchableOpacity>
+                <Text>Criar um produto</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+                <Text>Ver os produtos</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonRegister}>
-                <Text style={styles.text}>Cadastrar-se</Text>
-            </TouchableOpacity>
-            
+
+
+
+            <TouchableOpacity onPress={handleLogin}>
+                <Text>Entrar</Text>
+            </TouchableOpacity >
             <StatusBar style="auto" />
         </View>
     );
@@ -50,7 +78,7 @@ const styles = StyleSheet.create({
 
         backgroundColor: "#8C98FF",
         borderRadius: 26,
-        margin: 10 
+        margin: 10
     },
     buttonRegister: {
 
